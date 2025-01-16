@@ -17,7 +17,8 @@
 		approximateToHumanReadable,
 		getMessageContentParts,
 		sanitizeResponseContent,
-		createMessagesList
+		createMessagesList,
+		downloadFile
 	} from '$lib/utils';
 	import { WEBUI_BASE_URL } from '$lib/constants';
 
@@ -122,6 +123,8 @@
 
 	export let isLastMessage = true;
 	export let readOnly = false;
+
+	 let showMenu = false;
 
 	let model = null;
 	$: model = $models.find((m) => m.id === message.model);
@@ -731,7 +734,7 @@
 							{#if siblings.length > 1}
 								<div class="flex self-center min-w-fit" dir="ltr">
 									<button
-										class="self-center p-1 hover:bg-black/5 dark:hover:bg-white/5 dark:hover:text-white hover:text-black rounded-md transition"
+										class="self-center p-1 hover:bg-red/5 dark:hover:bg-white/5 dark:hover:text-white hover:text-red rounded-md transition"
 										on:click={() => {
 											showPreviousMessage(message);
 										}}
@@ -759,7 +762,7 @@
 									</div>
 
 									<button
-										class="self-center p-1 hover:bg-black/5 dark:hover:bg-white/5 dark:hover:text-white hover:text-black rounded-md transition"
+										class="self-center p-1 hover:bg-red/5 dark:hover:bg-white/5 dark:hover:text-white hover:text-red rounded-md transition"
 										on:click={() => {
 											showNextMessage(message);
 										}}
@@ -789,7 +792,7 @@
 											<button
 												class="{isLastMessage
 													? 'visible'
-													: 'invisible group-hover:visible'} p-1.5 hover:bg-black/5 dark:hover:bg-white/5 rounded-lg dark:hover:text-white hover:text-black transition"
+													: 'invisible group-hover:visible'} p-1.5 hover:bg-red/5 dark:hover:bg-white/5 rounded-lg dark:hover:text-white hover:text-red transition"
 												on:click={() => {
 													editMessageHandler();
 												}}
@@ -817,9 +820,10 @@
 									<button
 										class="{isLastMessage
 											? 'visible'
-											: 'invisible group-hover:visible'} p-1.5 hover:bg-black/5 dark:hover:bg-white/5 rounded-lg dark:hover:text-white hover:text-black transition copy-response-button"
+											: 'invisible group-hover:visible'} p-1.5 hover:bg-red/5 dark:hover:bg-white/5 rounded-lg dark:hover:text-white hover:text-red transition copy-response-button"
 										on:click={() => {
 											copyToClipboard(message.content);
+											console.log('Message content:', message.content);
 										}}
 									>
 										<svg
@@ -839,12 +843,104 @@
 									</button>
 								</Tooltip>
 
+
+
+
+
+
+
+								<Tooltip content={$i18n.t('Download')} placement="bottom">
+									<div class="relative group">
+										<!-- Botón principal de descarga -->
+										<button
+											class="p-1.5 hover:bg-red/5 dark:hover:bg-white/5 rounded-lg dark:hover:text-white hover:text-red transition copy-response-button"
+											on:click={() => {
+												const menu = document.getElementById('fixed-menu');
+												if (menu) menu.classList.toggle('hidden');
+											}}
+										>
+											<svg
+												xmlns="http://www.w3.org/2000/svg"
+												fill="none"
+												viewBox="0 0 24 24"
+												stroke-width="2.3"
+												stroke="currentColor"
+												class="w-6 h-6"
+											>
+												<path
+													stroke-linecap="round"
+													stroke-linejoin="round"
+													d="M12 3v12m0 0l-4-4m4 4l4-4M5 17h14"
+												/>
+											</svg>
+										</button>
+								
+										<!-- Ventana fija -->
+										<div
+											id="fixed-menu"
+											class="hidden fixed top-1/2 left-1/4 transform -translate-x-1/4 bg-white border border-gray-300 dark:bg-gray-800 dark:border-gray-600 rounded shadow-lg"
+											style="z-index: 9999; width: 200px;"
+										>
+											<div class="flex justify-between items-center px-4 py-2 border-b border-gray-300 dark:border-gray-600">
+												<span class="font-bold">Select Format</span>
+												<button
+													class="text-gray-500 hover:text-red-500"
+													on:click={() => {
+														const menu = document.getElementById('fixed-menu');
+														if (menu) menu.classList.add('hidden');
+													}}
+												>
+													&times;
+												</button>
+											</div>
+											<ul class="py-2">
+												<li>
+													<button
+														class="block w-full text-left px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700"
+														on:click={() => downloadFile(message.content, 'txt')}
+													>
+														Download as TXT
+													</button>
+												</li>
+												<li>
+													<button
+														class="block w-full text-left px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700"
+														on:click={() => downloadFile(message.content, 'pdf')}
+													>
+														Download as PDF
+													</button>
+												</li>
+												<li>
+													<button
+														class="block w-full text-left px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700"
+														on:click={() => downloadFile(message.content, 'doc')}
+													>
+														Download as DOC
+													</button>
+												</li>
+											</ul>
+										</div>
+									</div>
+								</Tooltip>
+								
+								
+								
+
+
+
+
+
+
+
+
+
+
 								<Tooltip content={$i18n.t('Read Aloud')} placement="bottom">
 									<button
 										id="speak-button-{message.id}"
 										class="{isLastMessage
 											? 'visible'
-											: 'invisible group-hover:visible'} p-1.5 hover:bg-black/5 dark:hover:bg-white/5 rounded-lg dark:hover:text-white hover:text-black transition"
+											: 'invisible group-hover:visible'} p-1.5 hover:bg-red/5 dark:hover:bg-white/5 rounded-lg dark:hover:text-white hover:text-red transition"
 										on:click={() => {
 											if (!loadingSpeech) {
 												toggleSpeakMessage();
@@ -922,7 +1018,7 @@
 										<button
 											class="{isLastMessage
 												? 'visible'
-												: 'invisible group-hover:visible'}  p-1.5 hover:bg-black/5 dark:hover:bg-white/5 rounded-lg dark:hover:text-white hover:text-black transition"
+												: 'invisible group-hover:visible'}  p-1.5 hover:bg-red/5 dark:hover:bg-white/5 rounded-lg dark:hover:text-white hover:text-red transition"
 											on:click={() => {
 												if (!generatingImage) {
 													generateImage(message);
@@ -999,7 +1095,7 @@
 										<button
 											class=" {isLastMessage
 												? 'visible'
-												: 'invisible group-hover:visible'} p-1.5 hover:bg-black/5 dark:hover:bg-white/5 rounded-lg dark:hover:text-white hover:text-black transition whitespace-pre-wrap"
+												: 'invisible group-hover:visible'} p-1.5 hover:bg-red/5 dark:hover:bg-white/5 rounded-lg dark:hover:text-white hover:text-red transition whitespace-pre-wrap"
 											on:click={() => {
 												console.log(message);
 											}}
@@ -1029,11 +1125,11 @@
 											<button
 												class="{isLastMessage
 													? 'visible'
-													: 'invisible group-hover:visible'} p-1.5 hover:bg-black/5 dark:hover:bg-white/5 rounded-lg {(
+													: 'invisible group-hover:visible'} p-1.5 hover:bg-red/5 dark:hover:bg-white/5 rounded-lg {(
 													message?.annotation?.rating ?? ''
 												).toString() === '1'
 													? 'bg-gray-100 dark:bg-gray-800'
-													: ''} dark:hover:text-white hover:text-black transition disabled:cursor-progress disabled:hover:bg-transparent"
+													: ''} dark:hover:text-white hover:text-red transition disabled:cursor-progress disabled:hover:bg-transparent"
 												disabled={feedbackLoading}
 												on:click={async () => {
 													await feedbackHandler(1);
@@ -1065,11 +1161,11 @@
 											<button
 												class="{isLastMessage
 													? 'visible'
-													: 'invisible group-hover:visible'} p-1.5 hover:bg-black/5 dark:hover:bg-white/5 rounded-lg {(
+													: 'invisible group-hover:visible'} p-1.5 hover:bg-red/5 dark:hover:bg-white/5 rounded-lg {(
 													message?.annotation?.rating ?? ''
 												).toString() === '-1'
 													? 'bg-gray-100 dark:bg-gray-800'
-													: ''} dark:hover:text-white hover:text-black transition disabled:cursor-progress disabled:hover:bg-transparent"
+													: ''} dark:hover:text-white hover:text-red transition disabled:cursor-progress disabled:hover:bg-transparent"
 												disabled={feedbackLoading}
 												on:click={async () => {
 													await feedbackHandler(-1);
@@ -1105,7 +1201,7 @@
 												id="continue-response-button"
 												class="{isLastMessage
 													? 'visible'
-													: 'invisible group-hover:visible'} p-1.5 hover:bg-black/5 dark:hover:bg-white/5 rounded-lg dark:hover:text-white hover:text-black transition regenerate-response-button"
+													: 'invisible group-hover:visible'} p-1.5 hover:bg-red/5 dark:hover:bg-white/5 rounded-lg dark:hover:text-white hover:text-red transition regenerate-response-button"
 												on:click={() => {
 													continueResponse();
 												}}
@@ -1138,7 +1234,7 @@
 											type="button"
 											class="{isLastMessage
 												? 'visible'
-												: 'invisible group-hover:visible'} p-1.5 hover:bg-black/5 dark:hover:bg-white/5 rounded-lg dark:hover:text-white hover:text-black transition regenerate-response-button"
+												: 'invisible group-hover:visible'} p-1.5 hover:bg-red/5 dark:hover:bg-white/5 rounded-lg dark:hover:text-white hover:text-red transition regenerate-response-button"
 											on:click={() => {
 												showRateComment = false;
 												regenerateResponse(message);
@@ -1172,6 +1268,7 @@
 											</svg>
 										</button>
 									</Tooltip>
+									
 
 									{#if isLastMessage}
 										{#each model?.actions ?? [] as action}
@@ -1180,7 +1277,7 @@
 													type="button"
 													class="{isLastMessage
 														? 'visible'
-														: 'invisible group-hover:visible'} p-1.5 hover:bg-black/5 dark:hover:bg-white/5 rounded-lg dark:hover:text-white hover:text-black transition regenerate-response-button"
+														: 'invisible group-hover:visible'} p-1.5 hover:bg-red/5 dark:hover:bg-white/5 rounded-lg dark:hover:text-white hover:text-red transition regenerate-response-button"
 													on:click={() => {
 														actionMessage(action.id, message);
 													}}

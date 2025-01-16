@@ -313,6 +313,10 @@ export const copyToClipboard = async (text) => {
 		return result;
 	}
 
+
+
+
+
 	result = await navigator.clipboard
 		.writeText(text)
 		.then(() => {
@@ -326,6 +330,53 @@ export const copyToClipboard = async (text) => {
 
 	return result;
 };
+export const downloadFile = (content, format) => {
+	const mimeTypes = {
+	  txt: 'text/plain',
+	  pdf: 'application/pdf',
+	  doc: 'application/msword',
+	};
+  
+	let blob;
+  
+	// Si el formato es PDF o DOC, asegurarse de que el contenido sea binario
+	if (format === 'pdf' || format === 'doc') {
+	  // Si el contenido es una cadena de texto (string), necesitamos convertirlo
+	  if (typeof content === 'string') {
+		// Si el contenido es texto, se necesita convertir a binario
+		const encoder = new TextEncoder();
+		content = encoder.encode(content); // Convierte el texto a Uint8Array
+	  }
+  
+	  // Verificar que el contenido ahora sea un ArrayBuffer o Uint8Array
+	  if (content instanceof ArrayBuffer || content instanceof Uint8Array) {
+		// Si el contenido es binario, crear el blob
+		blob = new Blob([content], { type: mimeTypes[format] });
+	  } else {
+		// Si el contenido no es binario, mostrar un error
+		console.error('El contenido debe ser un ArrayBuffer o Uint8Array para archivos PDF o DOC');
+		return;
+	  }
+	} else {
+	  // Si es un archivo de texto (txt), usar el contenido tal como está
+	  blob = new Blob([content], { type: mimeTypes[format] });
+	}
+  
+	// Crear un enlace de descarga
+	const link = document.createElement('a');
+	link.href = URL.createObjectURL(blob);
+	link.download = `message.${format}`;
+	
+	// Forzar el clic en el enlace para iniciar la descarga
+	link.click();
+  
+	// Limpiar recursos después de la descarga
+	URL.revokeObjectURL(link.href);
+  };
+  
+
+
+
 
 export const compareVersion = (latest, current) => {
 	return current === '0.0.0'
