@@ -849,6 +849,7 @@
 
 
 
+
 								<Tooltip content={$i18n.t('Download')} placement="bottom">
 									<div class="relative group">
 										<!-- Botón principal de descarga -->
@@ -878,7 +879,7 @@
 										<!-- Ventana fija -->
 										<div
 											id="fixed-menu"
-											class="hidden fixed top-1/2 left-1/4 transform -translate-x-1/4 bg-white border border-gray-300 dark:bg-gray-800 dark:border-gray-600 rounded shadow-lg"
+											class="hidden fixed top-1/4 left-1/2 transform -translate-x-1/2 bg-white border border-gray-300 dark:bg-gray-800 dark:border-gray-600 rounded shadow-lg"
 											style="z-index: 9999; width: 200px;"
 										>
 											<div class="flex justify-between items-center px-4 py-2 border-b border-gray-300 dark:border-gray-600">
@@ -922,7 +923,6 @@
 										</div>
 									</div>
 								</Tooltip>
-								
 								
 								
 
