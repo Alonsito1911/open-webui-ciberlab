@@ -357,7 +357,7 @@
 							class=" absolute -top-12 left-0 right-0 flex justify-center z-30 pointer-events-none"
 						>
 							<button
-								class=" bg-white border border-gray-100 dark:border-none dark:bg-white/20 p-1.5 rounded-full pointer-events-auto"
+								class=" bg-red border border-red-100 dark:border-none dark:bg-red/20 p-1.5 rounded-full pointer-events-auto"
 								on:click={() => {
 									autoScroll = true;
 									scrollToBottom();
@@ -383,11 +383,11 @@
 				<div class="w-full relative">
 					{#if atSelectedModel !== undefined || selectedToolIds.length > 0 || webSearchEnabled}
 						<div
-							class="px-3 pb-0.5 pt-1.5 text-left w-full flex flex-col absolute bottom-0 left-0 right-0 bg-gradient-to-t from-white dark:from-gray-900 z-10"
+							class="px-3 pb-0.5 pt-1.5 text-left w-full flex flex-col absolute bottom-0 left-0 right-0 bg-gradient-to-t from-red dark:from-red-900 z-10"
 						>
 							{#if selectedToolIds.length > 0}
 								<div class="flex items-center justify-between w-full">
-									<div class="flex items-center gap-2.5 text-sm dark:text-gray-500">
+									<div class="flex items-center gap-2.5 text-sm dark:text-red-500">
 										<div class="pl-1">
 											<span class="relative flex size-2">
 												<span
@@ -419,7 +419,7 @@
 
 							{#if webSearchEnabled}
 								<div class="flex items-center justify-between w-full">
-									<div class="flex items-center gap-2.5 text-sm dark:text-gray-500">
+									<div class="flex items-center gap-2.5 text-sm dark:text-red-500">
 										<div class="pl-1">
 											<span class="relative flex size-2">
 												<span
@@ -435,7 +435,7 @@
 
 							{#if atSelectedModel !== undefined}
 								<div class="flex items-center justify-between w-full">
-									<div class="pl-[1px] flex items-center gap-2 text-sm dark:text-gray-500">
+									<div class="pl-[1px] flex items-center gap-2 text-sm dark:text-red-500">
 										<img
 											crossorigin="anonymous"
 											alt="model profile"
@@ -452,7 +452,7 @@
 									</div>
 									<div>
 										<button
-											class="flex items-center dark:text-gray-500"
+											class="flex items-center dark:text-red-500"
 											on:click={() => {
 												atSelectedModel = undefined;
 											}}
@@ -487,7 +487,7 @@
 			</div>
 		</div>
 
-		<div class="{transparentBackground ? 'bg-transparent' : 'bg-white dark:bg-gray-900'} ">
+		<div class="{transparentBackground ? 'bg-transparent' : 'bg-red dark:bg-red-900'} ">
 			<div
 				class="{($settings?.widescreenMode ?? null)
 					? 'max-w-full'
@@ -544,7 +544,7 @@
 							}}
 						>
 							<div
-								class="flex-1 flex flex-col relative w-full rounded-3xl px-1 bg-gray-600/5 dark:bg-gray-400/5 dark:text-gray-100"
+								class="flex-1 flex flex-col relative w-full rounded-3xl px-1 bg-red-600/5 dark:bg-red-400/5 dark:text-red-100"
 								dir={$settings?.chatDirection ?? 'LTR'}
 							>
 								{#if files.length > 0}
@@ -586,7 +586,7 @@
 													</div>
 													<div class=" absolute -top-1 -right-1">
 														<button
-															class=" bg-gray-400 text-white border border-white rounded-full group-hover:visible invisible transition"
+															class=" bg-red-400 text-red border border-red rounded-full group-hover:visible invisible transition"
 															type="button"
 															on:click={() => {
 																files.splice(fileIdx, 1);
@@ -665,7 +665,7 @@
 											}}
 										>
 											<button
-												class="bg-transparent hover:bg-white/80 text-gray-800 dark:text-white dark:hover:bg-gray-800 transition rounded-full p-2 outline-none focus:outline-none"
+												class="bg-transparent hover:bg-red/80 text-red-800 dark:text-red dark:hover:bg-red-800 transition rounded-full p-2 outline-none focus:outline-none"
 												type="button"
 												aria-label="More"
 											>
@@ -685,7 +685,7 @@
 
 									{#if $settings?.richTextInput ?? true}
 										<div
-											class="scrollbar-hidden text-left bg-transparent dark:text-gray-100 outline-none w-full py-2.5 px-1 rounded-xl resize-none h-fit max-h-80 overflow-auto"
+											class="scrollbar-hidden text-left bg-transparent dark:text-red-100 outline-none w-full py-2.5 px-1 rounded-xl resize-none h-fit max-h-80 overflow-auto"
 										>
 											<RichTextInput
 												bind:this={chatInputElement}
@@ -888,7 +888,7 @@
 										<textarea
 											id="chat-input"
 											bind:this={chatInputElement}
-											class="scrollbar-hidden bg-transparent dark:text-gray-100 outline-none w-full py-3 px-1 rounded-xl resize-none h-[48px]"
+											class="scrollbar-hidden bg-transparent dark:text-red-100 outline-none w-full py-3 px-1 rounded-xl resize-none h-[48px]"
 											placeholder={placeholder ? placeholder : $i18n.t('Send a Message')}
 											bind:value={prompt}
 											on:keypress={(e) => {
@@ -1082,7 +1082,7 @@
 											<Tooltip content={$i18n.t('Record voice')}>
 												<button
 													id="voice-input-button"
-													class=" text-gray-600 dark:text-gray-300 hover:text-gray-700 dark:hover:text-gray-200 transition rounded-full p-1.5 mr-0.5 self-center"
+													class=" text-red-600 dark:text-red-300 hover:text-red-700 dark:hover:text-red-200 transition rounded-full p-1.5 mr-0.5 self-center"
 													type="button"
 													on:click={async () => {
 														try {
@@ -1132,7 +1132,7 @@
 												<div class=" flex items-center">
 													<Tooltip content={$i18n.t('Call')}>
 														<button
-															class=" bg-black text-white hover:bg-gray-900 dark:bg-white dark:text-black dark:hover:bg-gray-100 transition rounded-full p-2 self-center"
+															class=" bg-black text-red hover:bg-red-900 dark:bg-red dark:text-black dark:hover:bg-red-100 transition rounded-full p-2 self-center"
 															type="button"
 															on:click={async () => {
 																if (selectedModels.length > 1) {
@@ -1185,8 +1185,8 @@
 														<button
 															id="send-message-button"
 															class="{prompt !== ''
-																? 'bg-black text-white hover:bg-gray-900 dark:bg-white dark:text-black dark:hover:bg-gray-100 '
-																: 'text-white bg-gray-200 dark:text-gray-900 dark:bg-gray-700 disabled'} transition rounded-full p-1.5 self-center"
+																? 'bg-black text-red hover:bg-red-900 dark:bg-red dark:text-black dark:hover:bg-red-100 '
+																: 'text-red bg-red-200 dark:text-red-900 dark:bg-red-700 disabled'} transition rounded-full p-1.5 self-center"
 															type="submit"
 															disabled={prompt === ''}
 														>
@@ -1210,7 +1210,7 @@
 											<div class=" flex items-center">
 												<Tooltip content={$i18n.t('Stop')}>
 													<button
-														class="bg-white hover:bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-white dark:hover:bg-gray-800 transition rounded-full p-1.5"
+														class="bg-red hover:bg-red-100 text-red-800 dark:bg-red-700 dark:text-red dark:hover:bg-red-800 transition rounded-full p-1.5"
 														on:click={() => {
 															stopResponse();
 														}}
